@@ -1,5 +1,5 @@
 #Banking portal web application in Python
-Authors: Andrew Cowin, David Lee, Alexander Wolff
+Authors: Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz
 
 Status Report 1:
 Project Plan:
