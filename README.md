@@ -25,6 +25,8 @@ Functional and non-functional requirements:
 
 [] Upon request of the client, the bank employee account shall have permission to delete their account
 
+[] The client information shall be secure and private
+
 
 During the development, we will add to this list of features that our web application shall have.
 We will split up the work group members different functionalities that they should implement.
