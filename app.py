@@ -48,12 +48,10 @@ def auth_user():
 @app.route('/register_user', methods=['POST', 'GET'])
 def register_user():
     msg = ""
-
     if request.method == 'POST':
         try:
             email = request.form['Email']
             password = sha256_crypt.encrypt((str(request.form['Password'])))
-
             with sql.connect("Bank.db") as con:
                 cur = con.cursor()
 
@@ -61,8 +59,13 @@ def register_user():
                     msg = "no empty strings allowed"
                     raise Exception("no empty strings")
 
-                # if email == existing email
-                # needs implementation
+                # if email exists in the system
+                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+                #check if its possible to pull a row and if you can then the email exists
+                if cur.fetchone():
+                    print("test")
+                    msg = "this email is already in use"
+                    raise Exception("email already in use")
 
                 cur.execute("INSERT INTO Client (Email,Password) VALUES (?,?)", (email, password))
                 con.commit()
