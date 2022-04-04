@@ -1,21 +1,29 @@
-#Banking portal web application in Python
+# Banking Portal Web Application in Python
 
-Authors: Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz
+# List of Libraries (currently)
+flask, flask_sqlalchemy, flask_session, passlib
 
-Status Report 1:
-Project Plan:
+# Documentation
+Currently, users can log in and log out of their banking accounts and register a new account if needed. 
 
-Functional and non-functional requirements:
+Register account accomodates for empty email strings and empty password strings as well as checking if the email is already in use. 
+
+Log in page succesffully informs user if password is incorrect however the log in page doesnt currently inform the user if the email is in the system already.
+
+# Collaborators
+Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
+
+# Functional and non-functional requirements:
 
 [x] The user shall be able to login with a correct username and password
 
-[] The users login information shall be handles securely
+[x] The users login information shall be handles securely
 
 [] The banking portal shall have different levels of user access (such as standard bank client, bank employee, or premium client)
 
 [] A database shall store all of the accounts of the bank alongside their permissions, and general bank information (such as balances, transactions, settings, etc.)
 
-[] Upon login, the user shall have access to their bank accounts (checking, savings)
+[x] Upon login, the user shall have access to their bank accounts (checking, savings)
 
 [] The user shall have access to their recent transaction history
 
@@ -25,7 +33,7 @@ Functional and non-functional requirements:
 
 [] Upon request of the client, the bank employee account shall have permission to delete their account
 
-[] The client information shall be secure and private
+[x] The client information shall be secure and private
 
 
 During the development, we will add to this list of features that our web application shall have.
