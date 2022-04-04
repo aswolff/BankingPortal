@@ -1,10 +1,22 @@
 from flask import Flask, render_template, request, session, flash, redirect, url_for
+from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from passlib.hash import sha256_crypt
 # pip install passlib
 import sqlite3 as sql
 
 app = Flask(__name__)  # creates flask application
+
+app.config['SECRET_KEY'] = 'my_secret'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
+app.config['SESSION_TYPE'] = 'sqlalchemy'
+
+db = SQLAlchemy(app)
+app.config['SESSION_SQLALCHEMY'] = db
+
+sess = Session(app)
+
+db.create_all()
 
 
 @app.route('/')
@@ -24,25 +36,31 @@ def register():
 
 @app.route('/auth_user', methods=['POST', 'GET'])
 def auth_user():
+    msg = ""
     if request.method == 'POST':
-        try:
-            with sql.connect("Bank.db") as con:
-                email = request.form['Email']
-                cur = con.cursor()
-                # connect to database and grab all info under the email input
-                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                data = cur.fetchone()[1]  # this fetches the second value. the password
-                # now we compare the two passwords. the hashed and the input
-                if sha256_crypt.verify(request.form['Password'], data):
-                    msg = "success"
-                else:
-                    msg = "Incorrect"
-        except:
-            con.rollback()
-            msg = "error"
-        finally:
-            con.close()
-            return render_template("result.html", msg=msg)
+        with sql.connect("Bank.db") as con:
+            email = request.form['Email']
+            cur = con.cursor()
+            # connect to database and grab all info under the email input
+            cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+
+
+            # NEED TO ADD IF EMAIL ISNT IN THE SYSTEM
+            #test_email = cur.fetchone()
+            #if test_email is None:
+            #    msg = "Error. Email not found in system"
+            #    return render_template("result.html", msg=msg)
+
+            data = cur.fetchone()[1]  # this fetches the second value. the password
+            # now we compare the two passwords. the hashed and the input
+            if sha256_crypt.verify(request.form['Password'], data):
+                session['logged_in'] = True
+                session['username'] = email
+                msg = "Successfully logged in"
+                return redirect(url_for('dashboard'))
+            else:
+                msg = "Incorrect password"
+        return render_template("result.html", msg=msg)
 
 
 @app.route('/register_user', methods=['POST', 'GET'])
@@ -55,13 +73,17 @@ def register_user():
             with sql.connect("Bank.db") as con:
                 cur = con.cursor()
 
-                if email == "":
-                    msg = "no empty strings allowed"
+                if request.form['Email'] == "":
+                    msg = "no empty emails allowed"
                     raise Exception("no empty strings")
+
+                if request.form['Password'] == "":
+                    msg = "must have a password entered"
+                    raise Exception("no empty passwords")
 
                 # if email exists in the system
                 cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                #check if its possible to pull a row and if you can then the email exists
+                # check if it is possible to pull a row and if you can then the email exists
                 if cur.fetchone():
                     print("test")
                     msg = "this email is already in use"
@@ -76,6 +98,21 @@ def register_user():
         finally:
             con.close()
             return render_template("result.html", msg=msg)
+
+
+@app.route('/auth_user/dashboard')
+def dashboard():
+    if 'logged_in' in session:
+        print("test")
+        return render_template('dashboard.html', username=session['username'])
+    return redirect(url_for('auth_user'))
+
+
+@app.route('/auth_user/logout')
+def logout():
+    session.pop('logged_in', False)
+    session.pop('username', None)
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
