@@ -8,7 +8,11 @@ Currently, users can log in and log out of their banking accounts and register a
 
 Register account accomodates for empty email strings and empty password strings as well as checking if the email is already in use. 
 
-Log in page succesffully informs user if password is incorrect however the log in page doesnt currently inform the user if the email is in the system already.
+Login page acknowledges if emails dont exist in system as well as incorrect passwords input.
+
+Passwords are stored securely through encryption by using external library passlib.
+
+Flask sessions is used as well to provide support for a server side session to the banking app. The session accounts for clients logging in and out of the server with the data being stored on the server.
 
 # Collaborators
 Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
