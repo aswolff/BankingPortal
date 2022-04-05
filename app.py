@@ -41,16 +41,16 @@ def auth_user():
         with sql.connect("Bank.db") as con:
             email = request.form['Email']
             cur = con.cursor()
+
             # connect to database and grab all info under the email input
             cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+            test_email = cur.fetchall()
+            if len(test_email) == 0:
+                msg = "Error. Email not found in system"
+                return render_template("result.html", msg=msg)
 
-
-            # NEED TO ADD IF EMAIL ISNT IN THE SYSTEM
-            #test_email = cur.fetchone()
-            #if test_email is None:
-            #    msg = "Error. Email not found in system"
-            #    return render_template("result.html", msg=msg)
-
+            # connect to database and grab all info to find password
+            cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
             data = cur.fetchone()[1]  # this fetches the second value. the password
             # now we compare the two passwords. the hashed and the input
             if sha256_crypt.verify(request.form['Password'], data):
