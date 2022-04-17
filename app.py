@@ -103,7 +103,6 @@ def register_user():
 @app.route('/auth_user/dashboard')
 def dashboard():
     if 'logged_in' in session:
-        print("test")
         return render_template('dashboard.html', username=session['username'])
     return redirect(url_for('auth_user'))
 
@@ -113,6 +112,33 @@ def logout():
     session.pop('logged_in', False)
     session.pop('username', None)
     return redirect(url_for('home'))
+
+
+@app.route('/helpReq')
+def helpReq():
+    return render_template('helpRequest.html', username=session['username'])
+
+
+@app.route('/submitHelp', methods=['POST', 'GET'])
+def submitHelp():
+    if request.method == 'POST':
+        try:
+            problem = request.form['Problem']
+            time = request.form['submissionTime']
+            email = session['username']
+
+            with sql.connect("Bank.db") as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO Issue (Email, Problem, Date) VALUES (?,?,?)",
+                            (email, problem, time))
+                con.commit()
+                msg = "Message Sent. Expect to hear back from us soon!"
+        except:
+            con.rollback()
+            msg = "Something went wrong..."
+        finally:
+            con.close()
+            return render_template('dashboard.html', username=session['username'])
 
 
 if __name__ == '__main__':
