@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <h1>Banking Portal Project</h1>
+</head>
+<body>
+    <p>Hello {{ username }}!</p>
+    <p>Do you need assistance?</p>
+    <br>
+    <form action = "{{ url_for('submitHelp') }}" method = "POST">
+        Tell us about your problem: <br>
+        <textarea name = "Problem"></textarea> <br>
+        <br>
+        Please select the current time:
+        <input type = "datetime-local" name = "submissionTime" /><br><br>
+        <input type="submit" value = "submit" /><br>
+    </form>
+
+    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+</body>
+</html>
