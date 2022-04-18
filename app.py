@@ -59,12 +59,18 @@ def auth_user():
             data = cur.fetchone()[1]  # this fetches the second value. the password
             # now we compare the two passwords. the hashed and the input
             if sha256_crypt.verify(request.form['Password'], data):
-                session['logged_in'] = True
-                session['username'] = email
-
-                # checks if the user is an employee
                 cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                employed = cur.fetchone()[2]
+                firstName = cur.fetchone()[2]
+                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+                lastName = cur.fetchone()[3]
+                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+                employed = cur.fetchone()[4]
+
+                session['logged_in'] = True
+                session['email'] = email
+                session['firstName'] = firstName
+                session['lastName'] = lastName
+
                 if employed == 1:
                     session['employee'] = True
 
@@ -81,12 +87,21 @@ def register_user():
     if request.method == 'POST':
         try:
             email = request.form['Email']
+            first = request.form['FirstName']
+            last = request.form['LastName']
             password = sha256_crypt.encrypt((str(request.form['Password'])))
             with sql.connect("Bank.db") as con:
                 cur = con.cursor()
-
                 if request.form['Email'] == "":
                     msg = "no empty emails allowed"
+                    raise Exception("no empty strings")
+
+                if request.form['FirstName'] == "":
+                    msg = "Must Fill Out First Name"
+                    raise Exception("no empty strings")
+
+                if request.form['LastName'] == "":
+                    msg = "Must Fill Out Last Name"
                     raise Exception("no empty strings")
 
                 if request.form['Password'] == "":
@@ -101,7 +116,8 @@ def register_user():
                     msg = "this email is already in use"
                     raise Exception("email already in use")
 
-                cur.execute("INSERT INTO Client (Email,Password) VALUES (?,?)", (email, password))
+                cur.execute("INSERT INTO Client (Email,Password,FirstName,LastName) VALUES (?,?,?,?)",
+                            (email, password, first, last))
                 con.commit()
 
                 msg = "Account Made"
@@ -116,22 +132,24 @@ def register_user():
 def dashboard():
     if 'logged_in' in session:
         if 'employee' in session:
-            return render_template('employee.html', username=session['username'])
-        return render_template('dashboard.html', username=session['username'])
+            return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
+        return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
     return redirect(url_for('auth_user'))
 
 
 @app.route('/auth_user/logout')
 def logout():
     session.pop('logged_in', False)
-    session.pop('username', None)
+    session.pop('email', None)
     session.pop('employee', False)
+    session.pop('firstName', None)
+    session.pop('lastName', None)
     return redirect(url_for('home'))
 
 
 @app.route('/helpReq')
 def helpReq():
-    return render_template('helpRequest.html', username=session['username'])
+    return render_template('helpRequest.html', firstName=session['firstName'], lastName=session['lastName'])
 
 
 @app.route('/submitHelp', methods=['POST', 'GET'])
@@ -152,7 +170,9 @@ def submitHelp():
             msg = "Something went wrong..."
         finally:
             con.close()
-            return render_template('dashboard.html', username=session['username'])
+            if 'employee' in session:
+                return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
+            return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
 
 
 @app.route('/viewHelp', methods=['POST', 'GET'])
