@@ -1,13 +1,16 @@
-from flask import Flask, render_template, request, session, flash, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from flask_session import Session
-from passlib.hash import sha256_crypt
+import random
 # pip install passlib
 import sqlite3 as sql
+import string
+
+from flask import Flask, render_template, request, session, redirect, url_for
+from flask_session import Session
+from flask_sqlalchemy import SQLAlchemy
+from passlib.hash import sha256_crypt
 
 app = Flask(__name__)  # creates flask application
 
-app.config['SECRET_KEY'] = 'my_secret'
+app.config['SECRET_KEY'] = 'b@D-$EcR3T_KEy!'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
 app.config['SESSION_TYPE'] = 'sqlalchemy'
 
@@ -36,7 +39,12 @@ def register():
 
 @app.route('/closeIssue')
 def closeIssue():
-    return render_template('closeIssue.html')
+    return render_template('closeIssue.html', email=session['email'])
+
+
+@app.route('/deleteReq')
+def deleteReq():
+    return render_template('deleteRequest.html')
 
 
 @app.route('/auth_user', methods=['POST', 'GET'])
@@ -158,12 +166,16 @@ def submitHelp():
         try:
             problem = request.form['Problem']
             time = request.form['submissionTime']
-            email = session['username']
-
+            email = session['email']
+            ''' 
+            Used this source to generate random HelpNumber used below. by Worrisome Wallaby on May 11 2020
+            https://www.codegrepper.com/code-examples/python/python+get+random+uppercase+letter
+            '''
+            HelpNumber = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
             with sql.connect("Bank.db") as con:
                 cur = con.cursor()
-                cur.execute("INSERT INTO Issue (Email, Problem, Date) VALUES (?,?,?)",
-                            (email, problem, time))
+                cur.execute("INSERT INTO Issue (Email, Problem, Date, Number) VALUES (?,?,?,?)",
+                            (email, problem, time, HelpNumber))
                 con.commit()
         except:
             con.rollback()
@@ -186,15 +198,67 @@ def viewHelp():
     return render_template('viewHelp.html', rows=rows)
 
 
-@app.route('/closing', methods=['POST', 'GET'])
-def closing():
+@app.route('/viewUsersRequests', methods=['POST', 'GET'])
+def viewUsersRequests():
     con = sql.connect("Bank.db")
     con.row_factory = sql.Row
     cur = con.cursor()
-    cur.execute("SELECT * FROM Issue ORDER BY Date ASC")
+    cur.execute("SELECT * FROM Issue WHERE Email = ? ORDER BY Date ASC", [session['email']])
     rows = cur.fetchall()
     con.close()
-    return render_template('viewHelp.html', rows=rows)
+    return render_template('viewUsersRequests.html', rows=rows)
+
+
+@app.route('/closing', methods=['POST', 'GET'])
+def closing():
+    if request.method == 'POST':
+        try:
+            resolved = request.form['Problem']
+            number = request.form['HelpNumber']
+            email = session['email']
+
+            with sql.connect("Bank.db") as con:
+                cur = con.cursor()
+
+                cur.execute("SELECT * FROM Issue WHERE Number = ?", [number])
+                check_num = cur.fetchall()
+                if len(check_num) == 0:
+                    msg = "Unable to find this help request number"
+                    return render_template("result.html", msg=msg)
+
+                sqlstate = "UPDATE Issue SET Resolution = ?, ClosedBy = ? WHERE Number = ?"
+                cur.execute(sqlstate, (resolved, email, number))
+                con.commit()
+        except:
+            con.rollback()
+            msg = "Something went wrong..."
+            return render_template("result.html", msg=msg)
+        finally:
+            con.close()
+            if 'employee' in session:
+                return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
+            return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
+
+
+@app.route('/deleteRequest', methods=['POST', 'GET'])
+def deleteRequest():
+    if request.method == 'POST':
+        try:
+            num = request.form['HelpNum']
+            with sql.connect("Bank.db") as con:
+                cur = con.cursor()
+                cur.execute("DELETE FROM Issue WHERE Number = ?", [num])
+                print("ok")
+                con.commit()
+        except:
+            con.rollback()
+            msg = "Something went wrong..."
+            return render_template("result.html", msg=msg)
+        finally:
+            con.close()
+            if 'employee' in session:
+                return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
+            return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
 
 
 if __name__ == '__main__':
