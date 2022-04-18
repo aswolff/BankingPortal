@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <h1>Banking Portal Project</h1>
+</head>
+<body>
+    <p>Here are the current help requests:</p>
+    <br>
+    <table border = 1>
+            <thead>
+                <td>Email</td>
+                <td>Problem</td>
+                <td>Date</td>
+            </thead>
+            {% for row in rows %}
+                <tr>
+                    <td>{{row["Email"]}}</td>
+                    <td>{{row["Problem"]}}</td>
+                    <td>{{row["Date"]}}</td>
+                    <td>
+                    <a href = "{{ url_for('closeIssue') }}"> Close </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+</body>
+</html>
