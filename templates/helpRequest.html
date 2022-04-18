@@ -9,15 +9,20 @@
     <p>Hello {{ username }}!</p>
     <p>Do you need assistance?</p>
     <br>
+
     <form action = "{{ url_for('submitHelp') }}" method = "POST">
         Tell us about your problem: <br>
-        <textarea name = "Problem"></textarea> <br>
+        <textarea name = "Problem" required></textarea> <br>
         <br>
         Please select the current time:
-        <input type = "datetime-local" name = "submissionTime" /><br><br>
-        <input type="submit" value = "submit" /><br>
+        <input type = "datetime-local" name = "submissionTime" required/><br><br>
+        <input type="submit" value = "submit" onclick="msg()"/><br>
     </form>
-
+    <script>
+    function msg() {
+        alert("Thank you! You shall hear back from us soon");
+    }
+    </script>
     <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
 </body>
 </html>
