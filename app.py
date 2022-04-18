@@ -34,6 +34,11 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/closeIssue')
+def closeIssue():
+    return render_template('closeIssue.html')
+
+
 @app.route('/auth_user', methods=['POST', 'GET'])
 def auth_user():
     msg = ""
@@ -56,6 +61,13 @@ def auth_user():
             if sha256_crypt.verify(request.form['Password'], data):
                 session['logged_in'] = True
                 session['username'] = email
+
+                # checks if the user is an employee
+                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
+                employed = cur.fetchone()[2]
+                if employed == 1:
+                    session['employee'] = True
+
                 msg = "Successfully logged in"
                 return redirect(url_for('dashboard'))
             else:
@@ -103,6 +115,8 @@ def register_user():
 @app.route('/auth_user/dashboard')
 def dashboard():
     if 'logged_in' in session:
+        if 'employee' in session:
+            return render_template('employee.html', username=session['username'])
         return render_template('dashboard.html', username=session['username'])
     return redirect(url_for('auth_user'))
 
@@ -111,6 +125,7 @@ def dashboard():
 def logout():
     session.pop('logged_in', False)
     session.pop('username', None)
+    session.pop('employee', False)
     return redirect(url_for('home'))
 
 
@@ -132,13 +147,34 @@ def submitHelp():
                 cur.execute("INSERT INTO Issue (Email, Problem, Date) VALUES (?,?,?)",
                             (email, problem, time))
                 con.commit()
-                msg = "Message Sent. Expect to hear back from us soon!"
         except:
             con.rollback()
             msg = "Something went wrong..."
         finally:
             con.close()
             return render_template('dashboard.html', username=session['username'])
+
+
+@app.route('/viewHelp', methods=['POST', 'GET'])
+def viewHelp():
+    con = sql.connect("Bank.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM Issue ORDER BY Date ASC")
+    rows = cur.fetchall()
+    con.close()
+    return render_template('viewHelp.html', rows=rows)
+
+
+@app.route('/closing', methods=['POST', 'GET'])
+def closing():
+    con = sql.connect("Bank.db")
+    con.row_factory = sql.Row
+    cur = con.cursor()
+    cur.execute("SELECT * FROM Issue ORDER BY Date ASC")
+    rows = cur.fetchall()
+    con.close()
+    return render_template('viewHelp.html', rows=rows)
 
 
 if __name__ == '__main__':
