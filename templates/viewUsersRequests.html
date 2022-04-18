@@ -6,7 +6,8 @@
     <h1>Banking Portal Project</h1>
 </head>
 <body>
-    <p>Here are the current help requests:</p>
+    <p>Here are your help requests:</p>
+    <a href = "{{ url_for('deleteReq') }}"> Delete a Request? </a>
     <br>
     <table border = 1>
             <thead>
@@ -14,7 +15,8 @@
                 <td>Date</td>
                 <td>Email</td>
                 <td>Problem</td>
-                <td>Copy Help Number</td>
+                <td>Resolution</td>
+                <td>Closed By</td>
             </thead>
             {% for row in rows %}
                 <tr>
@@ -22,10 +24,8 @@
                     <td>{{row["Date"]}}</td>
                     <td>{{row["Email"]}}</td>
                     <td>{{row["Problem"]}}</td>
-
-                    <td><input type="button" value="Copy to Clipboard" onclick="" /></td>
-                    <td>
-                    <a href = "{{ url_for('closeIssue') }}"> Close </a>
+                    <td>{{row["Resolution"]}}</td>
+                    <td>{{row["ClosedBy"]}}</td>
                     </td>
                 </tr>
             {% endfor %}
