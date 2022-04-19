@@ -14,6 +14,8 @@ Passwords are stored securely through encryption by using external library passl
 
 Flask sessions is used as well to provide support for a server side session to the banking app. The session accounts for clients logging in and out of the server with the data being stored on the server.
 
+There exists user roles which are either Client or Employee. Clients can manage their finances and submit help requests from employees as well as view their submitted help requests. Employees have all the same functions as clients except they can view a list of all help requests and resolve any of them through the request number.
+
 # Collaborators
 Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
 
@@ -23,9 +25,9 @@ Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
 
 [x] The users login information shall be handles securely
 
-[] The banking portal shall have different levels of user access (such as standard bank client, bank employee, or premium client)
+[x] The banking portal shall have different levels of user access (such as standard bank client, bank employee, or premium client)
 
-[] A database shall store all of the accounts of the bank alongside their permissions, and general bank information (such as balances, transactions, settings, etc.)
+[x] A database shall store all of the accounts of the bank alongside their permissions, and general bank information (such as balances, transactions, settings, etc.)
 
 [x] Upon login, the user shall have access to their bank accounts (checking, savings)
 
@@ -33,12 +35,26 @@ Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
 
 [] The user shall be able to deposit checks, pay bills, or make transfers to other users of the bank (alongside other banking functionalities)
 
-[] The banking portal shall be stable and support multiple users to login at the same time
-
-[] Upon request of the client, the bank employee account shall have permission to delete their account
+[x] The banking portal shall be stable and support multiple users to login at the same time
 
 [x] The client information shall be secure and private
 
+[x] Clients can request for help from Employees and can view their help requests under a tab
+
+[x] Employees can see help requests and close them
 
 During the development, we will add to this list of features that our web application shall have.
 We will split up the work group members different functionalities that they should implement.
+
+# Division of Labor
+**David Lee**:
+
+    Secure Login,
+    Secure Register Page,
+    Multi User Access via Flask Sessions,
+    Dashboards,
+    Role Based Access,
+    Submit Help Request,
+    View Help Request,
+    Manage Users Help Request (ie. closing or deleting requests)
+  
