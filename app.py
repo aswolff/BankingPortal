@@ -247,8 +247,10 @@ def deleteRequest():
             num = request.form['HelpNum']
             with sql.connect("Bank.db") as con:
                 cur = con.cursor()
-                cur.execute("DELETE FROM Issue WHERE Number = ?", [num])
-                print("ok")
+                cur.execute("SELECT * FROM Issue WHERE Number = ?", [num])
+                check_email = cur.fetchone()[0]
+                if session['email'] == check_email:
+                    cur.execute("DELETE FROM Issue WHERE Number = ?", [num])
                 con.commit()
         except:
             con.rollback()
