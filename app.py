@@ -3,23 +3,21 @@ import random
 import sqlite3 as sql
 import string
 
-from flask import Flask, render_template, request, session, redirect, url_for
-from flask_session import Session
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template, request, redirect, url_for, session
+from flask_mysqldb import MySQL
+import MySQLdb.cursors
+import re
 from passlib.hash import sha256_crypt
 
 app = Flask(__name__)  # creates flask application
 
-app.config['SECRET_KEY'] = 'b@D-$EcR3T_KEy!'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite3'
-app.config['SESSION_TYPE'] = 'sqlalchemy'
+app.secret_key = 'b@D-$EcR3T_KEy!'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'Bank'
 
-db = SQLAlchemy(app)
-app.config['SESSION_SQLALCHEMY'] = db
-
-sess = Session(app)
-
-db.create_all()
+mysql = MySQL(app)
 
 
 @app.route('/')
@@ -51,42 +49,41 @@ def deleteReq():
 def auth_user():
     msg = ""
     if request.method == 'POST':
-        with sql.connect("Bank.db") as con:
-            email = request.form['Email']
-            cur = con.cursor()
+        email = request.form['Email']
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-            # connect to database and grab all info under the email input
-            cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-            test_email = cur.fetchall()
-            if len(test_email) == 0:
-                msg = "Error. Email not found in system"
-                return render_template("result.html", msg=msg)
+        # connect to database and grab all info under the email input
+        cur.execute("SELECT * FROM Client WHERE Email = %s", [email])
 
-            # connect to database and grab all info to find password
-            cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-            data = cur.fetchone()[1]  # this fetches the second value. the password
-            # now we compare the two passwords. the hashed and the input
-            if sha256_crypt.verify(request.form['Password'], data):
-                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                firstName = cur.fetchone()[2]
-                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                lastName = cur.fetchone()[3]
-                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                employed = cur.fetchone()[4]
+        test_email = cur.fetchall()
+        if len(test_email) == 0:
+            msg = "Error. Email not found in system"
+            return render_template("result.html", msg=msg)
 
-                session['logged_in'] = True
-                session['email'] = email
-                session['firstName'] = firstName
-                session['lastName'] = lastName
+        # connect to database and grab all info to find password
+        cur.execute("SELECT * FROM Client WHERE Email = %s", [email])
+        data = cur.fetchone()  # this fetches the second value. the password
+        data = data.get('Password')
+        # now we compare the two passwords. the hashed and the input
+        if sha256_crypt.verify(request.form['Password'], data):
+            cur.execute("SELECT * FROM Client WHERE Email = %s", [email])
+            values = cur.fetchone()
+            firstName = values.get('FirstName')
+            lastName = values.get('LastName')
+            employed = values.get('Employee')
+            session['logged_in'] = True
+            session['email'] = email
+            session['firstName'] = firstName
+            session['lastName'] = lastName
 
-                if employed == 1:
-                    session['employee'] = True
+            if employed == 1:
+                session['employee'] = True
 
-                msg = "Successfully logged in"
-                return redirect(url_for('dashboard'))
-            else:
-                msg = "Incorrect password"
-        return render_template("result.html", msg=msg)
+            msg = "Successfully logged in"
+            return redirect(url_for('dashboard'))
+        else:
+            msg = "Incorrect password"
+    return render_template("result.html", msg=msg)
 
 
 @app.route('/register_user', methods=['POST', 'GET'])
@@ -97,42 +94,40 @@ def register_user():
             email = request.form['Email']
             first = request.form['FirstName']
             last = request.form['LastName']
-            password = sha256_crypt.encrypt((str(request.form['Password'])))
-            with sql.connect("Bank.db") as con:
-                cur = con.cursor()
-                if request.form['Email'] == "":
-                    msg = "no empty emails allowed"
-                    raise Exception("no empty strings")
 
-                if request.form['FirstName'] == "":
-                    msg = "Must Fill Out First Name"
-                    raise Exception("no empty strings")
+            password = sha256_crypt.hash((str(request.form['Password'])))
 
-                if request.form['LastName'] == "":
-                    msg = "Must Fill Out Last Name"
-                    raise Exception("no empty strings")
+            if request.form['Email'] == "":
+                msg = "no empty emails allowed"
+                raise Exception("no empty strings")
 
-                if request.form['Password'] == "":
-                    msg = "must have a password entered"
-                    raise Exception("no empty passwords")
+            if request.form['FirstName'] == "":
+                msg = "Must Fill Out First Name"
+                raise Exception("no empty strings")
 
-                # if email exists in the system
-                cur.execute("SELECT * FROM Client WHERE Email = ?", [email])
-                # check if it is possible to pull a row and if you can then the email exists
-                if cur.fetchone():
-                    print("test")
-                    msg = "this email is already in use"
-                    raise Exception("email already in use")
+            if request.form['LastName'] == "":
+                msg = "Must Fill Out Last Name"
+                raise Exception("no empty strings")
 
-                cur.execute("INSERT INTO Client (Email,Password,FirstName,LastName) VALUES (?,?,?,?)",
-                            (email, password, first, last))
-                con.commit()
+            if request.form['Password'] == "":
+                msg = "must have a password entered"
+                raise Exception("no empty passwords")
 
-                msg = "Account Made"
-        except Exception as e:
-            con.rollback()
+            # if email exists in the system
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+            # check if it is possible to pull a row and if you can then the email exists
+            if cur.fetchone():
+                print("test")
+                msg = "this email is already in use"
+                raise Exception("email already in use")
+
+            cur.execute('INSERT INTO Client (Email,Password,FirstName,LastName) VALUES (%s,%s,%s,%s)',
+                        (email, password, first, last))
+            mysql.connection.commit()
+            msg = "Account Made"
+
         finally:
-            con.close()
             return render_template("result.html", msg=msg)
 
 
