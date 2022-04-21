@@ -1,17 +1,28 @@
 <html lang="en">
-    <body>
+<head>
+    <title>Banking Portal Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="register">
         <form action = "{{ url_for('register_user') }}" method = "POST">
-            <h3>Register</h3>
-            Email:
-            <input type = "email" name = "Email" /><br>
-            First Name:
-            <input type = "text" name = "FirstName" /><br>
-            Last Name:
-            <input type = "text" name = "LastName" /><br>
-            Password:
-            <input type = "password" name = "Password" /><br>
-            <input type = "submit" value = "submit" /><br>
-            <h4><a href = "/">back to home</a></h4>
+            <div class="container">
+                <div class="box-1">
+                    <h1>Register</h1>
+                    Email:
+                    <input type = "email" name = "Email" /><br>
+                    First Name:
+                    <input type = "text" name = "FirstName" /><br>
+                    Last Name:
+                    <input type = "text" name = "LastName" /><br>
+                    Password:
+                    <input type = "password" name = "Password" /><br>
+                    <input type = "submit" value = "submit" /><br>
+                    <p><a href = "/">back to home</a></p>
+                </div>
+            </div>
         </form>
-    </body>
+    </div>
+<img src="/static/images/home.png" class="reghomeImage" alt="home"/>
+</body>
 </html>

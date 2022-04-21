@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-    <body>
-        Query Result : {{ msg }}
-        <h2><a href = "/">back to home </a></h2>
-    </body>
+<head>
+    <title>Banking Portal Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="box-1">
+            <h1>{{ msg }}</h1>
+            <p><a href = "/">back to home </a></p>
+        </div>
+    </div>
+<img src="/static/images/home.png" class="reshomeImage" alt="home"/>
+</body>
 </html>

@@ -1,13 +1,24 @@
 <html lang="en">
-    <body>
-        <form action = "{{ url_for('auth_user') }}" method = "POST">
-            <h3>Login</h3>
-            Email:
-            <input type = "email" name = "Email" /><br>
-            Password:
-            <input type = "password" name = "Password" /><br>
-            <input type = "submit" value = "submit" /><br>
-            <h4><a href = "/">back to home</a></h4>
-        </form>
-    </body>
+<head>
+    <title>Banking Portal Project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="login">
+    <form action = "{{ url_for('auth_user') }}" method = "POST">
+        <div class="container">
+            <div class="box-1">
+                <h1>Login</h1>
+                Email:
+                <input type = "email" name = "Email" /><br>
+                Password:
+                <input type = "password" name = "Password" /><br>
+                <input type = "submit" value = "submit" /><br>
+                <p><a href = "/">back to home</a></p>
+            </div>
+        </div>
+    </form>
+</div>
+<img src="/static/images/home.png" class="homeImage" alt="home"/>
+</body>
 </html>

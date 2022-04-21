@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Dashboard</title>
-    <h1>Banking Portal Project</h1>
-    <h1>Welcome {{ firstName }} {{ lastName }}</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <p>Checking Account</p>
-    <p>Savings Account</p>
-    <p>Transfer Funds</p>
-    <br>
-    <p><a href = "/viewUsersRequests">View My Requests</a></p>
-    <br>
-    <p><a href = "{{ url_for('logout') }}"> Logout </a></p>
-    <p><a href = "/helpReq">Submit a Help Request</a></p>
+    <div class="dash">
+        <div class="box-2">
+            <h1>Banking Portal</h1>
+            <h1>Welcome {{ firstName }} {{ lastName }}</h1>
+            <div class="tab-1">
+                <p>Checking Account</p>
+            </div>
+            <p>Savings Account</p>
+            <p>Transfer Funds</p>
+            <br>
+            <p><a href = "/viewUsersRequests">View My Requests</a></p>
+            <br>
+            <p><a href = "{{ url_for('logout') }}"> Logout </a></p>
+            <p><a href = "/helpReq">Submit a Help Request</a></p>
+        </div>
+    </div>
 </body>
 </html>
