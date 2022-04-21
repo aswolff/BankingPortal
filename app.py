@@ -1,12 +1,10 @@
 import random
 # pip install passlib
-import sqlite3 as sql
 import string
 
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
-import re
 from passlib.hash import sha256_crypt
 
 app = Flask(__name__)  # creates flask application
