@@ -1,0 +1,122 @@
+body{
+  background-color: grey;
+  color: #555555;
+  font-family: 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+  font-size: 23px;
+  font-weight: normal;
+}
+
+a{
+  text-decoration: none;
+  color: olive;
+}
+
+a:hover{
+  color: darkgreen;
+}
+
+a:active{
+  color: black;
+}
+
+.container{
+  padding-top: 15%;
+  width: 30%;
+  margin: auto;
+}
+
+.box-1{
+  border: 1px #ccc solid;
+  padding: 39px;
+  border-radius: 20px;
+  background-color: antiquewhite;
+  color: black;
+}
+
+.box-1 h1{
+  text-align: center;
+}
+
+.container p{
+  padding-bottom: 19px;
+  padding-left: 75px;
+}
+
+.loginImage{
+  position: absolute;
+  top: 46%;
+  padding-left: 37%;
+}
+
+.registerImage{
+  position: absolute;
+  top: 55%;
+  padding-left: 37%;
+}
+
+.homeImage{
+  position: absolute;
+  top:69%;
+  padding-left: 38%;
+}
+
+.reghomeImage{
+  position: absolute;
+  top:98%;
+  padding-left: 38%;
+}
+
+.reshomeImage{
+  position: absolute;
+  top:55%;
+  padding-left: 38%;
+}
+
+.login form input[type="submit"], .register form input[type="submit"] {
+  width: 100%;
+  border: 1px #ccc solid;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: olive;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 22px;
+  color: #ffffff;
+}
+
+.login form input[type="submit"]:hover, .register form input[type="submit"]:hover {
+  background-color: darkgreen;
+  transition: background-color 0.2s;
+}
+
+.login form input[type="text"], .login form input[type="email"]{
+  width: 415px;
+  height: 50px;
+  border: 1px solid #dee0e4;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.login form input[type="password"]{
+  width: 370px;
+  height: 50px;
+  border: 1px solid #dee0e4;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.register form input[type="text"], .register form input[type="email"]{
+  width: 490px;
+  height: 50px;
+  border: 1px solid #dee0e4;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.register form input[type="password"]{
+  width: 490px;
+  height: 50px;
+  border: 1px solid #dee0e4;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
