@@ -11,6 +11,7 @@ from passlib.hash import sha256_crypt
 
 app = Flask(__name__)  # creates flask application
 
+# Need to configure from MySQL Instance !
 app.secret_key = 'b@D-$EcR3T_KEy!'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
@@ -167,16 +168,14 @@ def submitHelp():
             https://www.codegrepper.com/code-examples/python/python+get+random+uppercase+letter
             '''
             HelpNumber = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-            with sql.connect("Bank.db") as con:
-                cur = con.cursor()
-                cur.execute("INSERT INTO Issue (Email, Problem, Date, Number) VALUES (?,?,?,?)",
-                            (email, problem, time, HelpNumber))
-                con.commit()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute("INSERT INTO Issue (Email,Problem,Date,Number) VALUES (%s,%s,%s,%s)",
+                        (email, problem, time, HelpNumber))
+            mysql.connection.commit()
         except:
-            con.rollback()
             msg = "Something went wrong..."
+            return render_template("result.html", msg=msg)
         finally:
-            con.close()
             if 'employee' in session:
                 return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
             return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
@@ -184,23 +183,17 @@ def submitHelp():
 
 @app.route('/viewHelp', methods=['POST', 'GET'])
 def viewHelp():
-    con = sql.connect("Bank.db")
-    con.row_factory = sql.Row
-    cur = con.cursor()
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("SELECT * FROM Issue ORDER BY Date ASC")
     rows = cur.fetchall()
-    con.close()
     return render_template('viewHelp.html', rows=rows)
 
 
 @app.route('/viewUsersRequests', methods=['POST', 'GET'])
 def viewUsersRequests():
-    con = sql.connect("Bank.db")
-    con.row_factory = sql.Row
-    cur = con.cursor()
-    cur.execute("SELECT * FROM Issue WHERE Email = ? ORDER BY Date ASC", [session['email']])
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("SELECT * FROM Issue WHERE Email = %s ORDER BY Date ASC", [session['email']])
     rows = cur.fetchall()
-    con.close()
     return render_template('viewUsersRequests.html', rows=rows)
 
 
@@ -212,24 +205,20 @@ def closing():
             number = request.form['HelpNumber']
             email = session['email']
 
-            with sql.connect("Bank.db") as con:
-                cur = con.cursor()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-                cur.execute("SELECT * FROM Issue WHERE Number = ?", [number])
-                check_num = cur.fetchall()
-                if len(check_num) == 0:
-                    msg = "Unable to find this help request number"
-                    return render_template("result.html", msg=msg)
+            cur.execute("SELECT * FROM Issue WHERE Number = %s", [number])
+            check_num = cur.fetchall()
+            if len(check_num) == 0:
+                msg = "Unable to find this help request number"
+                return render_template("result.html", msg=msg)
 
-                sqlstate = "UPDATE Issue SET Resolution = ?, ClosedBy = ? WHERE Number = ?"
-                cur.execute(sqlstate, (resolved, email, number))
-                con.commit()
+            cur.execute("UPDATE Issue SET Resolution = %s, ClosedBy = %s WHERE Number = %s", (resolved, email, number))
+            mysql.connection.commit()
         except:
-            con.rollback()
             msg = "Something went wrong..."
             return render_template("result.html", msg=msg)
         finally:
-            con.close()
             if 'employee' in session:
                 return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
             return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
@@ -240,19 +229,17 @@ def deleteRequest():
     if request.method == 'POST':
         try:
             num = request.form['HelpNum']
-            with sql.connect("Bank.db") as con:
-                cur = con.cursor()
-                cur.execute("SELECT * FROM Issue WHERE Number = ?", [num])
-                check_email = cur.fetchone()[0]
-                if session['email'] == check_email:
-                    cur.execute("DELETE FROM Issue WHERE Number = ?", [num])
-                con.commit()
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute("SELECT * FROM Issue WHERE Number = %s", [num])
+            check_email = cur.fetchone()
+            check_email = check_email.get('Email')
+            if session['email'] == check_email:
+                cur.execute("DELETE FROM Issue WHERE Number = %s", [num])
+                mysql.connection.commit()
         except:
-            con.rollback()
             msg = "Something went wrong..."
             return render_template("result.html", msg=msg)
         finally:
-            con.close()
             if 'employee' in session:
                 return render_template('employee.html', firstName=session['firstName'], lastName=session['lastName'])
             return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
