@@ -1,0 +1,17 @@
+<html>
+   <body>
+      
+      <form action = "{{ url_for('transfer') }}" method = "POST">
+         <h3>Transfer Funds</h3>
+		 <h1>Your balance is {{balance}}</h1>
+         Recipient<br>
+         <input type = "text" name = "Recipient" /></br>
+         
+         Amount<br>
+         <input type = "text" name = "Amount" /><br>
+		 
+         <input type = "submit" value = "Send" /><br>
+      </form>
+      
+   </body>
+</html>
