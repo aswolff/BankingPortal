@@ -31,9 +31,9 @@ Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
 
 [x] Upon login, the user shall have access to their bank accounts (checking, savings)
 
-[] The user shall have access to their recent transaction history
+[x] The user shall have access to their recent transaction history
 
-[] The user shall be able to deposit checks, pay bills, or make transfers to other users of the bank (alongside other banking functionalities)
+[x] The user shall be able to deposit checks, pay bills, or make transfers to other users of the bank (alongside other banking functionalities)
 
 [x] The banking portal shall be stable and support multiple users to login at the same time
 
@@ -57,4 +57,11 @@ We will split up the work group members different functionalities that they shou
     Submit Help Request,
     View Help Request,
     Manage Users Help Request (ie. closing or deleting requests)
-  
+ 
+ **Jake Moretz**:
+    
+    Checking dashboard,
+    Savings dashboard,
+    Deposit money into savings and checking,
+    Withdraw money from savings and checking,
+    Display recent transactions for savings and checking
