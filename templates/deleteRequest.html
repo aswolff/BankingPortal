@@ -3,30 +3,31 @@
 <head>
     <title>Delete Any Request Here:</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <h1>Banking Portal</h1>
+    </br>
+    </br>
+    <h1>Delete Any of Your Requests Here</h1>
 </head>
 <body>
-    <div class="dash">
-        <div class="box-2">
-            <p>Delete Any of Your Requests Here:</p>
-            <br>
-
-            <form action = "{{ url_for('deleteRequest') }}" method = "POST">
+    <div class="login">
+        <div class="container-a">
+            <div class="box-1">
+                <form action = "{{ url_for('deleteRequest') }}" method = "POST">
                 Help Number: <br>
                 <input type="text" id="HelpNum" name="HelpNum"> <br>
                 <br>
                 <input type = "submit" value = "submit" onclick="msgs()"/><br>
-            </form>
+                </form>
 
-            <script>
-            function msgs() {
-                alert("We hope your request was resolved! If not please file a new request");
-            }
-            </script>
+                <script>
+                function msgs() {
+                    alert("We hope your request was resolved! If not please file a new request");
+                }
+                </script>
 
-            <br>
-            <p><a href = "{{ url_for('viewUsersRequests')}}"> View Your Requests </a></p>
-            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+                <br>
+                <p><a href = "{{ url_for('viewUsersRequests')}}"> View Your Requests </a></p>
+                <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+            </div>
         </div>
     </div>
 </body>

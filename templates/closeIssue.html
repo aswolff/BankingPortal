@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Close an Issue</title>
-    <h1>Banking Portal Project</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </br>
+    </br>
+    <h1>Close an Issue</h1>
 </head>
 <body>
-    <p>Close an Issue:</p>
-    <br>
-
-    <form action = "{{ url_for('closing') }}" method = "POST">
-        Help Number: <br>
-        <input type="text" id="HelpNumber" name="HelpNumber"> <br>
-        <br>
-        Resolution: <br>
-        <textarea name = "Problem" required></textarea> <br>
-        <input type = "submit" value = "submit" onclick="msg()"/><br>
-    </form>
-
-    <p><a href = "{{ url_for('viewHelp')}}"> View Help Request </a></p>
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+    <div class="login">
+        <div class="container-a">
+            <div class="box-1">
+                <form action = "{{ url_for('closing') }}" method = "POST">
+                Help Number:
+                <input type="text" id="HelpNumber" name="HelpNumber"> <br>
+                Resolution: <br>
+                <textarea name = "Problem" required></textarea> <br>
+                <input type = "submit" value = "submit" onclick="msg()"/><br>
+                </form>
+                <p><a href = "{{ url_for('viewHelp')}}"> View Help Request </a></p>
+                <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
