@@ -2,19 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <h1>Banking Portal Project</h1>
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <h1>Banking Portal</h1>
     <h1>Welcome Employee {{ firstName }} {{ lastName }}</h1>
 </head>
 <body>
-    <p>Checking Account</p>
-    <p>Savings Account</p>
-    <p>Transfer Funds</p>
-    <br>
-    <p><a href = "/viewUsersRequests">View My Requests</a></p>
-    <p><a href = "/viewHelp">View Help Requests</a></p>
-    <br>
-    <p><a href = "{{ url_for('logout') }}"> Logout </a></p>
-    <p><a href = "/helpReq">Submit a Help Request</a></p>
+    <div class="dash">
+        <div class="box-2">
+        <p><a href = "/checking">Checking Account</a></p>
+        <p><a href = "/savings">Savings Account</a></p>
+        <p>Transfer Funds</p>
+        <br>
+        <p><a href = "/viewUsersRequests">View My Requests</a></p>
+        <p><a href = "/viewHelp">View Help Requests</a></p>
+        <br>
+        <p><a href = "{{ url_for('logout') }}"> Logout </a></p>
+        <p><a href = "/helpReq">Submit a Help Request</a></p>
+        </div>
+    </div>
 </body>
 </html>

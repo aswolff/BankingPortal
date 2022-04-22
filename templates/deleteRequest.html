@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Delete Any Request Here:</title>
-    <h1>Banking Portal Project</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <h1>Banking Portal</h1>
 </head>
 <body>
-    <p>Delete Any Request Here:</p>
-    <br>
+    <div class="dash">
+        <div class="box-2">
+            <p>Delete Any of Your Requests Here:</p>
+            <br>
 
-    <form action = "{{ url_for('deleteRequest') }}" method = "POST">
-        Help Number: <br>
-        <input type="text" id="HelpNum" name="HelpNum"> <br>
-        <br>
-        <input type = "submit" value = "submit" onclick="msgs()"/><br>
-    </form>
-    <script>
-    function msgs() {
-        alert("We hope your request was resolved! If not please file a new request");
-    }
-    </script>
-    <br>
-    <p><a href = "{{ url_for('viewUsersRequests')}}"> View Your Requests </a></p>
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+            <form action = "{{ url_for('deleteRequest') }}" method = "POST">
+                Help Number: <br>
+                <input type="text" id="HelpNum" name="HelpNum"> <br>
+                <br>
+                <input type = "submit" value = "submit" onclick="msgs()"/><br>
+            </form>
+
+            <script>
+            function msgs() {
+                alert("We hope your request was resolved! If not please file a new request");
+            }
+            </script>
+
+            <br>
+            <p><a href = "{{ url_for('viewUsersRequests')}}"> View Your Requests </a></p>
+            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+        </div>
+    </div>
 </body>
 </html>

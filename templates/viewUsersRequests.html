@@ -3,34 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard</title>
-    <h1>Banking Portal Project</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <h1>Banking Portal</h1>
 </head>
 <body>
-    <p>Here are your help requests:</p>
-    <a href = "{{ url_for('deleteReq') }}"> Delete a Request? </a>
-    <br>
-    <table border = 1>
-            <thead>
-                <td>Help Number</td>
-                <td>Date</td>
-                <td>Email</td>
-                <td>Problem</td>
-                <td>Resolution</td>
-                <td>Closed By</td>
-            </thead>
-            {% for row in rows %}
-                <tr>
-                    <td>{{row["Number"]}}</td>
-                    <td>{{row["Date"]}}</td>
-                    <td>{{row["Email"]}}</td>
-                    <td>{{row["Problem"]}}</td>
-                    <td>{{row["Resolution"]}}</td>
-                    <td>{{row["ClosedBy"]}}</td>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+    <div class="dash">
+        <div class="box-2">
+            <p>Here are your help requests:</p>
+            <a href = "{{ url_for('deleteReq') }}"> Delete a Request? </a>
+            <br>
+            <table border = 1>
+                <thead>
+                    <td>Help Number</td>
+                    <td>Date</td>
+                    <td>Email</td>
+                    <td>Problem</td>
+                    <td>Resolution</td>
+                    <td>Closed By</td>
+                </thead>
+                {% for row in rows %}
+                    <tr>
+                        <td>{{row["Number"]}}</td>
+                        <td>{{row["Date"]}}</td>
+                        <td>{{row["Email"]}}</td>
+                        <td>{{row["Problem"]}}</td>
+                        <td>{{row["Resolution"]}}</td>
+                        <td>{{row["ClosedBy"]}}</td>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+        </div>
+    </div>
 </body>
 </html>

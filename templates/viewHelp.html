@@ -2,21 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <h1>Banking Portal Project</h1>
+    <title>View all Help Requests</title>
+    <h1>Banking Portal</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <p>Here are the current help requests:</p>
-    <br>
-    <table border = 1>
-            <thead>
-                <td>Help Number</td>
-                <td>Date</td>
-                <td>Email</td>
-                <td>Problem</td>
-                <td>Copy Help Number</td>
-            </thead>
-            {% for row in rows %}
+    <div class="dash">
+        <div class="box-2">
+            <p>Here are the current help requests:</p>
+            <br>
+            <table border = 1>
+                <thead>
+                    <td>Help Number</td>
+                    <td>Date</td>
+                    <td>Email</td>
+                    <td>Problem</td>
+                    <td>Copy Help Number</td>
+                </thead>
+                {% for row in rows %}
                 <tr>
                     <td>{{row["Number"]}}</td>
                     <td>{{row["Date"]}}</td>
@@ -28,9 +31,11 @@
                     <a href = "{{ url_for('closeIssue') }}"> Close </a>
                     </td>
                 </tr>
-            {% endfor %}
-        </table>
-
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+                {% endfor %}
+            </table>
+            <br>
+            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+        </div>
+    </div>
 </body>
 </html>

@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <title>Dashboard</title>
+    <h1>Banking Portal</h1>
+    <h1>Welcome {{ firstName }} {{ lastName }}</h1>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="dash">
         <div class="box-2">
-            <h1>Banking Portal</h1>
-            <h1>Welcome {{ firstName }} {{ lastName }} {{ savings}} </h1>
             <div class="tab-1">
                 <p><a href = "/checking">Checking Account</a></p>
             </div>
             <p><a href = "/savings">Savings Account</a></p>
+            <p>Transfer Funds</p>
             <br>
             <p><a href = "/viewUsersRequests">View My Requests</a></p>
             <br>
