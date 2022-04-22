@@ -1,10 +1,12 @@
 import random
 # pip install passlib
+import sqlite3 as sql
 import string
 
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+import re
 from passlib.hash import sha256_crypt
 
 app = Flask(__name__)  # creates flask application
@@ -13,7 +15,7 @@ app = Flask(__name__)  # creates flask application
 app.secret_key = 'b@D-$EcR3T_KEy!'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'password'
 app.config['MYSQL_DB'] = 'Bank'
 
 mysql = MySQL(app)
@@ -138,6 +140,70 @@ def dashboard():
         return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
     return redirect(url_for('auth_user'))
 
+@app.route('/deposit')
+def deposit():
+    return render_template('deposit.html')
+
+@app.route('/calcdeposit', methods=['POST', 'GET'])
+def calc():
+    msg=""
+    if request.method == 'POST':
+        try:
+            add = request.form['deposit']
+            add = float(add)
+            if add < 0:
+                msg = "Please deposit amount greater than 0"
+            else:
+                email = session['email']
+                cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+                data = cur.fetchone()
+                data = data.get('Checking')
+                if data == None:
+                    data = 0
+                data = float(data)
+                add += data
+                cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, email))
+                mysql.connection.commit()
+        finally:
+            return render_template('depositSuc.html', msg=msg)
+
+@app.route('/depositSuc')
+def depositSuc():
+    return render_template('depositSuc.html')
+
+@app.route('/pay')
+def withdraw():
+    pass
+
+@app.route('/checking')
+def checking():
+    email=session['email']
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+    data = cur.fetchone()
+    data = data.get('Checking')
+    if data == None:
+        data = 0
+    data = float(data)  
+    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking = data)
+
+@app.route('/savings')
+def saving():
+    email=session['email']
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+    data = cur.fetchone()
+    data = data.get('Checking')
+    if data == None:
+        data = 0
+        data = float(data)
+        data = round(data, 2)
+    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], savings = data)
+
+@app.route('/transfer')
+def transfer():
+    return render_template('transfer.html')
 
 @app.route('/auth_user/logout')
 def logout():
