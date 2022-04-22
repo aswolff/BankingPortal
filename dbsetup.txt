@@ -1,0 +1,35 @@
+CREATE DATABASE IF NOT EXISTS `Bank` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `Bank`;
+
+CREATE TABLE IF NOT EXISTS `Client` (
+    `Email` varchar(50) NOT NULL,
+    `Password` varchar(255) NOT NULL,
+    `FirstName` varchar(25) DEFAULT NULL,
+    `LastName` varchar(25) DEFAULT NULL,
+    `Employee` int(1) DEFAULT NULL,
+    `id` int NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`id`),
+    Savings float DEFAULT NULL,
+    Checking float DEFAULT NULL
+)ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `History` (
+    `Email` varchar(50) NOT NULL,
+    `Date` datetime DEFAULT NULL,
+    `Amount` float DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `saveHistory` (
+    `Email` varchar(50) NOT NULL,
+    `Date` datetime DEFAULT NULL,
+    `Amount` float DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Issue` (
+  `Email` varchar(50) NOT NULL,
+  `Problem` text,
+  `Date` datetime DEFAULT NULL,
+  `Number` varchar(8) DEFAULT NULL,
+  `Resolution` text,
+  `ClosedBy` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
