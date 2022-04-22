@@ -9,21 +9,21 @@ CREATE TABLE IF NOT EXISTS `Client` (
     `Employee` int(1) DEFAULT NULL,
     `id` int NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (`id`),
-    Savings float DEFAULT NULL,
-    Checking float DEFAULT NULL
-)ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+    `Savings` float DEFAULT NULL,
+    `Checking` float DEFAULT NULL
+)ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `History` (
     `Email` varchar(50) NOT NULL,
-    `Date` datetime DEFAULT NULL,
+    `Date` datetime DEFAULT current_timestamp,
     `Amount` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `saveHistory` (
     `Email` varchar(50) NOT NULL,
     `Date` datetime DEFAULT NULL,
     `Amount` float DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Issue` (
   `Email` varchar(50) NOT NULL,
@@ -32,4 +32,4 @@ CREATE TABLE IF NOT EXISTS `Issue` (
   `Number` varchar(8) DEFAULT NULL,
   `Resolution` text,
   `ClosedBy` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4PRIMARY;
