@@ -4,26 +4,30 @@
     <meta charset="UTF-8">
     <title>Savings</title>
     <h1>Savings for {{ firstName }} {{ lastName }}</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Total: ${{ savings }}</h1>
-    <p><a href = "/depositSavings">Deposit</a></p>
-    <p><a href = "/paySavings">Pay</a></p>
-    <p>Recent transactions:</p>
-    <br>
-    <table border = 1>
-            <thead>
-                <td>Date</td>
-                <td>Amount</td>
-            </thead>
-            {% for row in rows %}
+    <div class="container-a">
+        <div class="box-1">
+            <h1>Total: ${{ savings }}</h1>
+            <p><a href = "/depositSavings">Deposit</a></p>
+            <p><a href = "/paySavings">Withdraw</a></p>
+            <p>Recent transactions:</p>
+            <br>
+            <table class = "styled-table">
+                <thead>
+                    <td>Date</td>
+                    <td>Amount</td>
+                </thead>
+                {% for row in rows %}
                 <tr>
                     <td>{{row["Date"]}}</td>
                     <td>{{row["Amount"]}}</td>
                 </tr>
             {% endfor %}
-        </table>
-
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+            </table>
+            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+        </div>
+    </div>
 </body>
 </html>

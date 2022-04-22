@@ -1,15 +1,27 @@
 <html lang="en">
 <head>
-    <title><h1>Deposit Checking</h1></title>>
+    <title>Deposit Checking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </br>
+    </br>
+    <h1>Deposit Into Checking</h1>
 </head>
 <body>
-    <form action = "{{ url_for('calc') }}" method = "POST">
-            How much would you like to deposit into your checking account?
-            <input type = "number" name = "deposit" step = ".01"/><br>
-            Please select the current time:
-            <input type = "datetime-local" name = "submissionTime" required/><br><br>
-            <input type = "submit" value = "submit" /><br>
-        <p><a href = "/checking">back to checking</a></p>
-    </form>
+    <div class="login">
+        <div class="container-a">
+            <div class="box-1">
+                <form action = "{{ url_for('calc') }}" method = "POST">
+                How much would you like to deposit into your checking account?
+                <br>
+                <input type = "number" name = "deposit" step = ".01"/><br>
+                Please select the current time:
+                <br>
+                <input type = "datetime-local" name = "submissionTime" required/><br><br>
+                <input type = "submit" value = "submit" /><br>
+                <p><a href = "/checking">back to checking</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

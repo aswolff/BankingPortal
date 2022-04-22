@@ -1,14 +1,28 @@
-<html>
-   <body>
-      <form action = "{{ url_for('transferFunds') }}" method = "POST">
-         <h3>Transfer Funds</h3>
-		 <h1>Who do you want to send money to today? (Please enter email for recipient)</h1> 
-         Recipient<br>
-         <input type = "Email" name = "Email" /></br>
-         Amount<br>
-         <input type = "number" name = "amount" step = ".01"/><br>
-         <input type = "submit" value = "Send" /><br>
-		 <p><a href = "/checking">back to checking</a></p>
-      </form>
-   </body>
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <title>Transfer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+   </br>
+   </br>
+   <h1>Transfer Funds</h1>
+</head>
+
+<body>
+   <div class="login">
+        <div class="container-a">
+            <div class="box-1">
+               <form action = "{{ url_for('transferFunds') }}" method = "POST">
+		       <p>Who do you want to send money to today? (Please enter email for recipient)</p>
+               Recipient<br>
+               <input type = "Email" name = "Email" /></br>
+               Amount<br>
+               <input type = "number" name = "amount" step = ".01"/><br>
+               <input type = "submit" value = "Send" /><br>
+		       <p><a href = "/checking">back to checking</a></p>
+               </form>
+            </div>
+        </div>
+   </div>
+</body>
 </html>

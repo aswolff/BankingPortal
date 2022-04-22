@@ -4,27 +4,33 @@
     <meta charset="UTF-8">
     <title>Checking</title>
     <h1>Checking for {{ firstName }} {{ lastName }}</h1>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Total: ${{ checking }}</h1>
-    <p><a href = "/deposit">Deposit</a></p>
-    <p><a href = "/pay">Pay</a></p>
-    <p><a href = "/transfer">Transfer</a></p>
-    <p>Recent transactions:</p>
-    <br>
-    <table border = 1>
-            <thead>
-                <td>Date</td>
-                <td>Amount</td>
-            </thead>
-            {% for row in rows %}
-                <tr>
-                    <td>{{row["Date"]}}</td>
-                    <td>{{row["Amount"]}}</td>
-                </tr>
-            {% endfor %}
-        </table>
-
-    <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+    <div class="container-a">
+        <div class="box-1">
+            <h1>Total: ${{ checking }}</h1>
+            <p><a href = "/deposit">Deposit</a></p>
+            <p><a href = "/pay">Withdraw</a></p>
+            <p><a href = "/transfer">Transfer</a></p>
+            <br>
+            <p>Recent transactions:</p>
+            <table class = "styled-table">
+                <thead>
+                    <td width="45%">Date</td>
+                    <td>Amount</td>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td>{{row["Date"]}}</td>
+                        <td>{{row["Amount"]}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
+        </div>
+    </div>
 </body>
 </html>

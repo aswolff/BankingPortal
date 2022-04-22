@@ -12,7 +12,7 @@
             <p>Here are your help requests:</p>
             <a href = "{{ url_for('deleteReq') }}"> Delete a Request? </a>
             <br>
-            <table border = 1>
+            <table class = "styled-table">
                 <thead>
                     <td>Help Number</td>
                     <td>Date</td>
@@ -21,6 +21,7 @@
                     <td>Resolution</td>
                     <td>Closed By</td>
                 </thead>
+                <tbody>
                 {% for row in rows %}
                     <tr>
                         <td>{{row["Number"]}}</td>
@@ -31,6 +32,7 @@
                         <td>{{row["ClosedBy"]}}</td>
                         </td>
                     </tr>
+                </tbody>
                 {% endfor %}
             </table>
             <br>

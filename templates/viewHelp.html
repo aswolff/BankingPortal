@@ -11,7 +11,7 @@
         <div class="box-2">
             <p>Here are the current help requests:</p>
             <br>
-            <table border = 1>
+            <table class = "styled-table">
                 <thead>
                     <td>Help Number</td>
                     <td>Date</td>
@@ -20,18 +20,19 @@
                     <td>Copy Help Number</td>
                 </thead>
                 {% for row in rows %}
+                <tbody>
                 <tr>
                     <td>{{row["Number"]}}</td>
                     <td>{{row["Date"]}}</td>
                     <td>{{row["Email"]}}</td>
                     <td>{{row["Problem"]}}</td>
-
                     <td><input type="button" value="Copy to Clipboard" onclick="" /></td>
                     <td>
                     <a href = "{{ url_for('closeIssue') }}"> Close </a>
                     </td>
                 </tr>
                 {% endfor %}
+                </tbody>
             </table>
             <br>
             <p><a href = "{{ url_for('dashboard') }}"> Go Back to Dashboard </a></p>
