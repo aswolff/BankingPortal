@@ -243,6 +243,35 @@ def calcSavings():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+@app.route('/paySavings')
+def withdrawSav():
+    return render_template('paySavings.html')
+
+@app.route('/calcpaySavings', methods = ['POST', 'GET'])
+def calcWithSav():
+    msg=""
+    if request.method == 'POST':
+        try:
+            sub = request.form['pay']
+            sub = float(sub)
+            email = session['email']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+            data = cur.fetchone()
+            data = data.get('Savings')
+            if data == None:
+                data = 0
+            data = float(data)
+            if sub > data:
+                msg = ("Please withdraw amount less than %s", data)
+            else:
+                sub = data - sub
+                cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (sub, email))
+                mysql.connection.commit()
+                msg = "Withdraw Successful"
+        finally:
+            return render_template('depositSuc.html', msg=msg)
+
 @app.route('/savings')
 def savings():
     email=session['email']
