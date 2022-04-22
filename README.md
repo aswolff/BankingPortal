@@ -66,3 +66,10 @@ We will split up the work group members different functionalities that they shou
     Deposit money into savings and checking,
     Withdraw money from savings and checking,
     Display recent transactions for savings and checking
+    
+ **Alexander Wolff**:
+    
+    Transfering funds between users in database,
+    Created multiple html pages,
+    Setup MySQL database,
+    Setup Docker
