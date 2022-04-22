@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `Client` (
     `LastName` varchar(25) DEFAULT NULL,
     `Employee` int(1) DEFAULT NULL,
     `id` int NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (`id`),
+    PRIMARY KEY (`Email`),
     `Savings` float DEFAULT 0,
     `Checking` float DEFAULT 0
 )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
