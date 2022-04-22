@@ -96,8 +96,6 @@ def register_user():
             email = request.form['Email']
             first = request.form['FirstName']
             last = request.form['LastName']
-            sav = request.form['Savings']
-            check = request.form['Checking']
 
             password = sha256_crypt.hash((str(request.form['Password'])))
 
@@ -126,8 +124,8 @@ def register_user():
                 msg = "this email is already in use"
                 raise Exception("email already in use")
 
-            cur.execute('INSERT INTO Client (Email,Password,FirstName,LastName,Savings,Checking) VALUES (%s,%s,%s,%s,%s,%s)',
-                        (email, password, first, last, sav, check))
+            cur.execute('INSERT INTO Client (Email,Password,FirstName,LastName) VALUES (%s,%s,%s,%s)',
+                        (email, password, first, last))
             mysql.connection.commit()
             msg = "Account Made"
 
