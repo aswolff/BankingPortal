@@ -151,6 +151,7 @@ def calc():
         try:
             add = request.form['deposit']
             add = float(add)
+            temp = add
             if add < 0:
                 msg = "Please deposit amount greater than 0"
             else:
@@ -166,6 +167,9 @@ def calc():
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
                 msg = "Deposit Successful"
+                time = request.form['submissionTime']
+                cur.execute("INSERT INTO History (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
+                mysql.connection.commit()
         finally:
             return render_template('depositSuc.html', msg=msg)
 
@@ -184,6 +188,7 @@ def calcWith():
         try:
             sub = request.form['pay']
             sub = float(sub)
+            temp = sub*-1
             email = session['email']
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
@@ -199,6 +204,9 @@ def calcWith():
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (sub, email))
                 mysql.connection.commit()
                 msg = "Withdraw Successful"
+                time = request.form['submissionTime']
+                cur.execute("INSERT INTO History (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
+                mysql.connection.commit()
         finally:
             return render_template('depositSuc.html', msg=msg)
 
@@ -211,8 +219,10 @@ def checking():
     data = data.get('Checking')
     if data == None:
         data = 0
-    data = float(data)  
-    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking = data)
+    data = float(data)
+    cur.execute('SELECT * FROM History WHERE Email = %s ORDER BY Date DESC', [email])
+    rows = cur.fetchall()
+    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking = data, rows=rows)
 
 @app.route('/depositSavings')
 def depositSavings():
