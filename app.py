@@ -165,6 +165,7 @@ def calc():
                 add += data
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
+                msg = "Deposit Successful"
         finally:
             return render_template('depositSuc.html', msg=msg)
 
@@ -238,6 +239,7 @@ def calcSavings():
                 add += data
                 cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
+                msg = "Deposit Successful"
         finally:
             return render_template('depositSuc.html', msg=msg)
 
