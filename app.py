@@ -174,7 +174,32 @@ def depositSuc():
 
 @app.route('/pay')
 def withdraw():
-    pass
+    return render_template('pay.html')
+
+@app.route('/calcpay', methods = ['POST', 'GET'])
+def calcWith():
+    msg=""
+    if request.method == 'POST':
+        try:
+            sub = request.form['pay']
+            sub = float(sub)
+            email = session['email']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+            data = cur.fetchone()
+            data = data.get('Checking')
+            if data == None:
+                data = 0
+            data = float(data)
+            if sub > data:
+                msg = ("Please withdraw amount less than %s", data)
+            else:
+                sub = data - sub
+                cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (sub, email))
+                mysql.connection.commit()
+                msg = "Withdraw Successful"
+        finally:
+            return render_template('depositSuc.html', msg=msg)
 
 @app.route('/checking')
 def checking():
@@ -188,18 +213,45 @@ def checking():
     data = float(data)  
     return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking = data)
 
+@app.route('/depositSavings')
+def depositSavings():
+    return render_template('depositSavings.html')
+
+@app.route('/calcdepositSavings', methods=['POST', 'GET'])
+def calcSavings():
+    msg=""
+    if request.method == 'POST':
+        try:
+            add = request.form['deposit']
+            add = float(add)
+            if add < 0:
+                msg = "Please deposit amount greater than 0"
+            else:
+                email = session['email']
+                cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+                data = cur.fetchone()
+                data = data.get('Savings')
+                if data == None:
+                    data = 0
+                data = float(data)
+                add += data
+                cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (add, email))
+                mysql.connection.commit()
+        finally:
+            return render_template('depositSuc.html', msg=msg)
+
 @app.route('/savings')
-def saving():
+def savings():
     email=session['email']
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
     data = cur.fetchone()
-    data = data.get('Checking')
+    data = data.get('Savings')
     if data == None:
         data = 0
-        data = float(data)
-        data = round(data, 2)
-    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], savings = data)
+    data = float(data)
+    return render_template('savings.html', firstName=session['firstName'], lastName=session['lastName'], savings = data)
 
 @app.route('/transfer')
 def transfer():
