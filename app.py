@@ -166,7 +166,7 @@ def calc():
                 add += data
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
-                msg = "Deposit Successful"
+                msg = "Depositted successfully into checking account!"
                 time = request.form['submissionTime']
                 cur.execute("INSERT INTO History (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
                 mysql.connection.commit()
@@ -198,12 +198,12 @@ def calcWith():
                 data = 0
             data = float(data)
             if sub > data:
-                msg = ("Please withdraw amount less than %s", data)
+                msg = ("Please withdraw amount less than", data)
             else:
                 sub = data - sub
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (sub, email))
                 mysql.connection.commit()
-                msg = "Withdraw Successful"
+                msg = "Withdraw from checking account successful!"
                 time = request.form['submissionTime']
                 cur.execute("INSERT INTO History (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
                 mysql.connection.commit()
@@ -250,7 +250,7 @@ def calcSavings():
                 add += data
                 cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
-                msg = "Deposit Successful"
+                msg = "Depositted successfully into savings account!"
                 time = request.form['submissionTime']
                 cur.execute("INSERT INTO saveHistory (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
                 mysql.connection.commit()
@@ -283,7 +283,7 @@ def calcWithSav():
                 sub = data - sub
                 cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (sub, email))
                 mysql.connection.commit()
-                msg = "Withdraw Successful"
+                msg = "Withdraw from savings account successful!"
                 time = request.form['submissionTime']
                 cur.execute("INSERT INTO saveHistory (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
                 mysql.connection.commit()
