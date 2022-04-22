@@ -77,6 +77,7 @@ def auth_user():
             session['firstName'] = firstName
             session['lastName'] = lastName
 
+
             if employed == 1:
                 session['employee'] = True
 
@@ -95,6 +96,8 @@ def register_user():
             email = request.form['Email']
             first = request.form['FirstName']
             last = request.form['LastName']
+            sav = request.form['Savings']
+            check = request.form['Checking']
 
             password = sha256_crypt.hash((str(request.form['Password'])))
 
@@ -123,8 +126,8 @@ def register_user():
                 msg = "this email is already in use"
                 raise Exception("email already in use")
 
-            cur.execute('INSERT INTO Client (Email,Password,FirstName,LastName) VALUES (%s,%s,%s,%s)',
-                        (email, password, first, last))
+            cur.execute('INSERT INTO Client (Email,Password,FirstName,LastName,Savings,Checking) VALUES (%s,%s,%s,%s,%s,%s)',
+                        (email, password, first, last, sav, check))
             mysql.connection.commit()
             msg = "Account Made"
 
@@ -166,9 +169,55 @@ def calc():
                 add += data
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
-                msg = "Depositted successfully into checking account!"
+                msg = "Deposited successfully into checking account!"
                 time = request.form['submissionTime']
                 cur.execute("INSERT INTO History (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
+                mysql.connection.commit()
+        finally:
+            return render_template('depositSuc.html', msg=msg)
+
+@app.route('/transferFunds', methods=['POST', 'GET'])
+def transferFunds():
+    msg=""
+    if request.method == 'POST':
+        try:
+            amount = request.form['amount']
+            amount = float(amount)
+            recipient = request.form['Email']
+            temp = amount
+            email = session['email']
+            cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
+            data = cur.fetchone()
+            data = data.get('Checking')
+            if data == None:
+                data = 0
+            data = float(data)
+            cur.execute('SELECT * FROM Client WHERE Email = %s', [recipient])
+            test_email = cur.fetchall()
+            if len(test_email) == 0:
+                msg = "Error. Email not found in system"
+            if amount < 0:
+                msg = "Please deposit amount greater than 0"
+            if amount >= data:
+                msg = "Please withdraw amount less than" + str(data)
+            else:
+                sub = data - amount
+                cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (sub, email))
+                mysql.connection.commit()
+                cur.execute("INSERT INTO History (Email, Amount) VALUES (%s,%s)", (email, temp))
+                mysql.connection.commit()
+                cur.execute('SELECT * FROM Client WHERE Email = %s', [recipient])
+                data = cur.fetchone()
+                data = data.get('Checking')
+                if data == None:
+                    data = 0
+                data = float(data)
+                add = data + amount
+                cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (add, recipient))
+                mysql.connection.commit()
+                msg = "Transfer successful!"
+                cur.execute("INSERT INTO History (Email, Amount) VALUES (%s,%s)", (recipient, temp))
                 mysql.connection.commit()
         finally:
             return render_template('depositSuc.html', msg=msg)
@@ -198,7 +247,7 @@ def calcWith():
                 data = 0
             data = float(data)
             if sub > data:
-                msg = ("Please withdraw amount less than", data)
+                msg = "Please withdraw amount less than" + data
             else:
                 sub = data - sub
                 cur.execute("UPDATE Client SET Checking = %s WHERE Email = %s", (sub, email))
