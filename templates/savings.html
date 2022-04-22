@@ -14,11 +14,13 @@
     <br>
     <table border = 1>
             <thead>
-                
+                <td>Date</td>
+                <td>Amount</td>
             </thead>
             {% for row in rows %}
                 <tr>
-                    
+                    <td>{{row["Date"]}}</td>
+                    <td>{{row["Amount"]}}</td>
                 </tr>
             {% endfor %}
         </table>

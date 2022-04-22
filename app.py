@@ -235,6 +235,7 @@ def calcSavings():
         try:
             add = request.form['deposit']
             add = float(add)
+            temp = add
             if add < 0:
                 msg = "Please deposit amount greater than 0"
             else:
@@ -250,6 +251,9 @@ def calcSavings():
                 cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (add, email))
                 mysql.connection.commit()
                 msg = "Deposit Successful"
+                time = request.form['submissionTime']
+                cur.execute("INSERT INTO saveHistory (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
+                mysql.connection.commit()
         finally:
             return render_template('depositSuc.html', msg=msg)
 
@@ -264,6 +268,7 @@ def calcWithSav():
         try:
             sub = request.form['pay']
             sub = float(sub)
+            temp = sub*-1
             email = session['email']
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
@@ -273,12 +278,15 @@ def calcWithSav():
                 data = 0
             data = float(data)
             if sub > data:
-                msg = ("Please withdraw amount less than %s", data)
+                msg = ("Please withdraw amount less than", data)
             else:
                 sub = data - sub
                 cur.execute("UPDATE Client SET Savings = %s WHERE Email = %s", (sub, email))
                 mysql.connection.commit()
                 msg = "Withdraw Successful"
+                time = request.form['submissionTime']
+                cur.execute("INSERT INTO saveHistory (Email,Date,Amount) VALUES (%s,%s,%s)", (email, time, temp))
+                mysql.connection.commit()
         finally:
             return render_template('depositSuc.html', msg=msg)
 
@@ -292,7 +300,9 @@ def savings():
     if data == None:
         data = 0
     data = float(data)
-    return render_template('savings.html', firstName=session['firstName'], lastName=session['lastName'], savings = data)
+    cur.execute('SELECT * FROM saveHistory WHERE Email = %s ORDER BY Date DESC', [email])
+    rows = cur.fetchall()
+    return render_template('savings.html', firstName=session['firstName'], lastName=session['lastName'], savings = data, rows=rows)
 
 @app.route('/transfer')
 def transfer():
