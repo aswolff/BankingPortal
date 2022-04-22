@@ -15,7 +15,7 @@ app = Flask(__name__)  # creates flask application
 app.secret_key = 'b@D-$EcR3T_KEy!'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'password'
+app.config['MYSQL_PASSWORD'] = 'Timebomb321@'
 app.config['MYSQL_DB'] = 'Bank'
 
 mysql = MySQL(app)
@@ -76,7 +76,6 @@ def auth_user():
             session['email'] = email
             session['firstName'] = firstName
             session['lastName'] = lastName
-
 
             if employed == 1:
                 session['employee'] = True
@@ -141,13 +140,15 @@ def dashboard():
         return render_template('dashboard.html', firstName=session['firstName'], lastName=session['lastName'])
     return redirect(url_for('auth_user'))
 
+
 @app.route('/deposit')
 def deposit():
     return render_template('deposit.html')
 
+
 @app.route('/calcdeposit', methods=['POST', 'GET'])
 def calc():
-    msg=""
+    msg = ""
     if request.method == 'POST':
         try:
             add = request.form['deposit']
@@ -174,9 +175,10 @@ def calc():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+
 @app.route('/transferFunds', methods=['POST', 'GET'])
 def transferFunds():
-    msg=""
+    msg = ""
     if request.method == 'POST':
         try:
             amount = request.form['amount']
@@ -220,22 +222,25 @@ def transferFunds():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+
 @app.route('/depositSuc')
 def depositSuc():
     return render_template('depositSuc.html')
+
 
 @app.route('/pay')
 def withdraw():
     return render_template('pay.html')
 
-@app.route('/calcpay', methods = ['POST', 'GET'])
+
+@app.route('/calcpay', methods=['POST', 'GET'])
 def calcWith():
-    msg=""
+    msg = ""
     if request.method == 'POST':
         try:
             sub = request.form['pay']
             sub = float(sub)
-            temp = sub*-1
+            temp = sub * -1
             email = session['email']
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
@@ -257,9 +262,10 @@ def calcWith():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+
 @app.route('/checking')
 def checking():
-    email=session['email']
+    email = session['email']
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
     data = cur.fetchone()
@@ -269,15 +275,18 @@ def checking():
     data = float(data)
     cur.execute('SELECT * FROM History WHERE Email = %s ORDER BY Date DESC', [email])
     rows = cur.fetchall()
-    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking = data, rows=rows)
+    return render_template('checking.html', firstName=session['firstName'], lastName=session['lastName'], checking=data,
+                           rows=rows)
+
 
 @app.route('/depositSavings')
 def depositSavings():
     return render_template('depositSavings.html')
 
+
 @app.route('/calcdepositSavings', methods=['POST', 'GET'])
 def calcSavings():
-    msg=""
+    msg = ""
     if request.method == 'POST':
         try:
             add = request.form['deposit']
@@ -304,18 +313,20 @@ def calcSavings():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+
 @app.route('/paySavings')
 def withdrawSav():
     return render_template('paySavings.html')
 
-@app.route('/calcpaySavings', methods = ['POST', 'GET'])
+
+@app.route('/calcpaySavings', methods=['POST', 'GET'])
 def calcWithSav():
-    msg=""
+    msg = ""
     if request.method == 'POST':
         try:
             sub = request.form['pay']
             sub = float(sub)
-            temp = sub*-1
+            temp = sub * -1
             email = session['email']
             cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
             cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
@@ -337,9 +348,10 @@ def calcWithSav():
         finally:
             return render_template('depositSuc.html', msg=msg)
 
+
 @app.route('/savings')
 def savings():
-    email=session['email']
+    email = session['email']
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute('SELECT * FROM Client WHERE Email = %s', [email])
     data = cur.fetchone()
@@ -349,11 +361,14 @@ def savings():
     data = float(data)
     cur.execute('SELECT * FROM saveHistory WHERE Email = %s ORDER BY Date DESC', [email])
     rows = cur.fetchall()
-    return render_template('savings.html', firstName=session['firstName'], lastName=session['lastName'], savings = data, rows=rows)
+    return render_template('savings.html', firstName=session['firstName'], lastName=session['lastName'], savings=data,
+                           rows=rows)
+
 
 @app.route('/transfer')
 def transfer():
     return render_template('transfer.html')
+
 
 @app.route('/auth_user/logout')
 def logout():
