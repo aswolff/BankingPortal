@@ -60,6 +60,7 @@ We will split up the work group members different functionalities that they shou
  
  **Jake Moretz**:
     
+    Helped edit and added a few databases,
     Checking dashboard,
     Savings dashboard,
     Deposit money into savings and checking,
