@@ -6,13 +6,21 @@ body{
   font-weight: normal;
 }
 
+h1{
+  text-align: center;
+}
+
+b1{
+  text-align: center;
+}
+
 a{
   text-decoration: none;
-  color: olive;
+  color: darkgreen;
 }
 
 a:hover{
-  color: darkgreen;
+  color: #009879;
 }
 
 a:active{
@@ -41,6 +49,58 @@ a:active{
   padding-bottom: 19px;
   padding-left: 75px;
 }
+
+.container-a{
+  width: 55%;
+  margin: auto;
+}
+
+.container-a p{
+  padding-bottom: 19px;
+  padding-left: 75px;
+}
+
+.container-a table{
+  border: 0px;
+  solid-color: black;
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing: 20px;
+}
+
+
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  min-width: 90%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 12px 15px;
+}
+
+
 
 .loginImage{
   position: absolute;
@@ -77,7 +137,7 @@ a:active{
   border: 1px #ccc solid;
   padding: 10px;
   border-radius: 20px;
-  background-color: olive;
+  background-color: #009879;
   cursor: pointer;
   font-weight: bold;
   font-size: 22px;
@@ -90,6 +150,14 @@ a:active{
 }
 
 .login form input[type="text"], .login form input[type="email"]{
+  width: 415px;
+  height: 50px;
+  border: 1px solid #dee0e4;
+  margin-bottom: 20px;
+  padding: 0 15px;
+}
+
+.login form input[type="number"], .login form input[type="datetime-local"]{
   width: 415px;
   height: 50px;
   border: 1px solid #dee0e4;
