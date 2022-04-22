@@ -1,10 +1,10 @@
 <html lang="en">
 <head>
-    <title><h1>Withdraw from Savings</h1></title>>
+    <title>Withdraw Savings</title>>
 </head>
 <body>
     <form action = "{{ url_for('calcWithSav') }}" method = "POST">
-            <p>How much would you like to withdraw from your savings account?</p>
+            How much would you like to withdraw from your savings account?
             <input type = "number" name = "pay" step = ".01"/><br>
             <input type = "datetime-local" name = "submissionTime" required/><br><br>
             <input type = "submit" value = "submit" /><br>
