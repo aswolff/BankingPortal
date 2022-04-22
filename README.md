@@ -89,3 +89,4 @@ We will split up the work group members different functionalities that they shou
     Created multiple html pages,
     Setup MySQL database,
     Setup Docker
+    Project Writeup (Functional and non-functional requirements)
