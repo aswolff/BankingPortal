@@ -105,3 +105,23 @@ We will split up the work group members different functionalities that they shou
     Setup MySQL database,
     Setup Docker
     Project Writeup (Functional and non-functional requirements)
+
+
+# CITATION / RESOURCES USED
+**IMAGES:**
+
+    https://www.seekpng.com/ipng/u2q8i1y3i1i1o0r5_login/
+
+    https://www.seekpng.com/ipng/u2q8w7r5u2o0o0i1_circled-user-icon-user-profile-icon-png/
+
+    https://www.seekpng.com/ipng/u2q8q8r5i1w7r5e6_home-icon-free-ios-home-icon/
+
+    https://www.seekpng.com/ipng/u2q8y3y3e6q8i1i1_home-improvement-comments-home-improvement-icon/
+**TUTORIALS/RESOURCES**
+    
+    https://www.freecodecamp.org/news/html-button-link-code-examples-how-to-make-html-hyperlinks-using-the-href-attribute-on-tags/
+
+    https://codeshack.io/login-system-python-flask-mysql/
+
+    https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l
+
