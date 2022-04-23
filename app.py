@@ -15,7 +15,7 @@ app = Flask(__name__)  # creates flask application
 app.secret_key = 'b@D-$EcR3T_KEy!'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'YOUR_EMAIL_HERE'
+app.config['MYSQL_PASSWORD'] = 'YOUR_PASSWORD_HERE'
 app.config['MYSQL_DB'] = 'Bank'
 
 mysql = MySQL(app)
