@@ -1,4 +1,6 @@
 # Banking Portal Web Application in Python
+The original proposal was that we implemented a secure banking portal web application in Python. This would be accomplished using Flask and a database which we opted for MySQL. We also wanted to add roles in employees and regular clients and they were essentially both the same except employees can access all help requests and close help requests.
+
 
 # How to Run / Setup
 
@@ -19,35 +21,40 @@ That form will document the resolution of the problem and sign the email from th
 Whenever a client views their help requests they can then see the resolution and which employee it was closed by.
 
 
-# Documentation
+# Current Bugs
+The table for viewing requests has a problem in that the text area for problems spans past the table cell.
 
+Not a bug but transferring funds is only available for checking and not savings accounts
 
-# Collaborators
+# Project Members
 Andrew Cowin, David Lee, Alexander Wolff, Jake Moretz, Addison Nugent
+
+# Actual Collaborators
+David Lee, Alexander Wolff, Jake Moretz
 
 # Functional and non-functional requirements:
 
-The user shall be able to login with a correct username and password
+[x] The user shall be able to login with a correct username and password
 
-The users login information shall be handles securely
+[x] The users login information shall be handles securely
 
-The banking portal shall have different levels of user access (such as standard bank client, bank employee, or premium client)
+[x] The banking portal shall have different levels of user access (such as standard bank client, bank employee, or premium client)
 
-A database shall store all of the accounts of the bank alongside their permissions, and general bank information (such as balances, transactions, settings, etc.)
+[x] A database shall store all of the accounts of the bank alongside their permissions, and general bank information (such as balances, transactions, settings, etc.)
 
-Upon login, the user shall have access to their bank accounts (checking, savings)
+[x] Upon login, the user shall have access to their bank accounts (checking, savings)
 
-The user shall have access to their recent transaction history
+[x] The user shall have access to their recent transaction history
 
-The user shall be able to deposit checks, pay bills, or make transfers to other users of the bank (alongside other banking functionalities)
+[x] The user shall be able to deposit checks, pay bills, or make transfers to other users of the bank (alongside other banking functionalities)
 
-The banking portal shall be stable and support multiple users to login at the same time
+[x] The banking portal shall be stable and support multiple users to login at the same time
 
-The client information shall be secure and private
+[x] The client information shall be secure and private
 
-Clients can request for help from Employees and can view their help requests under a tab
+[x] Clients can request for help from Employees and can view their help requests under a tab
 
-Employees can see help requests and close them
+[x] Employees can see help requests and close them
 
 During the development, we will add to this list of features that our web application shall have.
 We will split up the work group members different functionalities that they should implement.
@@ -56,7 +63,6 @@ We will split up the work group members different functionalities that they shou
 **David Lee**:
 
     README.md
-    Setup DOCKER
     Secure Login,
     Secure Register Page,
     Setup MySQL database to work with Flask,
@@ -72,7 +78,9 @@ We will split up the work group members different functionalities that they shou
         Index,
         Login,
         Register,
-        Dashboard
+        Dashboard,
+        Help Requests,
+        Checking/Savings
  
  **Jake Moretz**:
     
