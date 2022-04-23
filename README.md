@@ -106,6 +106,13 @@ We will split up the work group members different functionalities that they shou
     Setup Docker
     Project Writeup (Functional and non-functional requirements)
 
+# PROJECT DEMO
+
+https://youtu.be/S-hm4Oan2rg
+
+# GITHUB LINK
+
+https://github.com/aswolff/COP4521-Project
 
 # CITATION / RESOURCES USED
 **IMAGES:**
