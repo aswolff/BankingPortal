@@ -6,6 +6,13 @@ The original proposal was that we implemented a secure banking portal web applic
 
 Included is a dbsetup.txt which is an executable script for creating the 'Bank' database as well as all tables associated with the database. This is vital for being able to use the web app for the first time! Also included is a requirements.txt which is used with Docker to build the container image which can be installed via pip. The requirements.txt is a text file that includes all libraries used for the web app.
 
+**Inside the app.py make sure to adjust the app.config to match your system**
+
+    app.config['MYSQL_HOST'] = 'localhost'
+    app.config['MYSQL_USER'] = 'root'
+    app.config['MYSQL_PASSWORD'] = 'YOUR_PASSWORD_HERE'
+    app.config['MYSQL_DB'] = 'Bank'
+
 # Role Based Access
 
 **Begin by doing a simple script execution to make a client an employee:**
